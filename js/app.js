@@ -28,5 +28,88 @@ restartEls.addEventListener("click", function () {
   tie = false;
   init();
 });
+function handleClick(event){
+    const squareIndex = event.target.id;
+    if(winner === true){
+        return;
+    }
+if (board[squareIndex] === "O" || board[squareIndex] === "X") {
+    return;
+}
+placePiece(squareIndex);
+updateBoard();
+checkForWinner();
+checkForTie();
+switchPlayerTurn();
+}
 
-functiom
+function placePiece(index) {
+    board[index] = turn;
+}
+
+function updateBoard() {
+    board.forEach((str, index) => {
+        squareEls[index].innerHTML = str;
+    });
+}
+
+
+function updateMessage() {
+    if (winner == false && tie == false){
+        messageEls.innerHTML = "Player" + turn + "'s turn";
+    }
+    if (winner == false && tie == true) {
+        messageEls.innerHTML = "Tie game";
+    }
+    if (winner == true) {
+        messageEls.innerHTML = "Congrats Player " + turn + "you won it all!!!"
+    }
+}
+function checkForTie(){
+    if(winner) {
+        return;
+    }
+    for (const i of board){
+        if (i === "") {
+            return;
+        }
+    }
+    tie = true
+}
+function switchPlayerTurn() {
+    if(winner) {
+        return;
+    }
+    if (turn == "O") {
+        turn = "X";
+    } else {
+        turn = "O";
+    }
+    updateMessage();
+}
+function checkForWinner() {
+    for (const i of winningCombos) {
+        const elem1 = board[i[0]];
+        const elem2 = board[i[1]];
+        const elem3 = board[i[2]];
+        if(elem1 !== "") {
+            if(elem1 === elem2) {
+                if(elem1 == elem3) {
+                winner = true;
+                updateMessage();
+                return;
+            }}
+        }
+    }
+}
+
+function render() {
+    updateBoard();
+    updateMessage();
+}
+
+
+function init () {
+    render();
+}
+init();
